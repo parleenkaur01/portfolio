@@ -1,0 +1,40 @@
+:root {
+  /* Sticky header + safe gap so in-page links don’t hide section tops under the bar */
+  --portfolio-header-scroll-offset: clamp(6.75rem, 5.2rem + 3.5vw, 8.25rem);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #e5e7eb;
+  background-color: #030712;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --portfolio-header-scroll-offset: clamp(9.25rem, 7rem + 12vw, 12.5rem);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: var(--portfolio-header-scroll-offset);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+#root {
+  min-height: 100vh;
+  padding: 0;
+}
