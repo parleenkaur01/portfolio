@@ -45,6 +45,27 @@ export const resumeFacts = {
       technologies: ['React', 'Node.js', 'Express.js', 'MongoDB', 'Socket.IO', 'JWT', 'REST APIs'],
       repoUrl: projectRepoUrls.uberClone,
     },
+    {
+      name: 'Emotion Detection from Speech',
+      dates: 'Oct 2024 — Dec 2024',
+      bullets: [
+        'Deployed an Azure-based emotion detection pipeline using LSTM/CNN models, achieving 95% accuracy.',
+        'Engineered distributed preprocessing for 100k+ samples (~70% faster) and MLflow hyperparameter tuning, improving F1 by 4 points.',
+      ],
+      technologies: [
+        'Python',
+        'PyTorch',
+        'Scikit-learn',
+        'Azure',
+        'MLflow',
+        'TensorFlow',
+        'SQL',
+        'Git',
+        'Pandas',
+        'NumPy',
+      ],
+      repoUrl: projectRepoUrls.emotionDetectionSpeech,
+    },
   ],
 } as const
 
@@ -72,7 +93,7 @@ const chunks: Array<{ id: string; title: string; text: string }> = [
   ...resumeFacts.projects.map((p) => ({
     id: `proj-${p.name}`,
     title: `${p.name}`,
-    text: `${p.dates}\n${p.bullets.join('\n')}\nTechnology used: ${p.technologies.join(', ')}\nRepo: ${p.repoUrl}`,
+    text: `${p.dates}\n${p.bullets.join('\n')}\nTechnology used: ${p.technologies.join(', ')}\nLink: ${p.repoUrl}`,
   })),
 ]
 
@@ -147,7 +168,7 @@ function inferTopicFromAssistantText(text: string): InferredTopic {
 }
 
 function formatDetailedProject(p: (typeof resumeFacts.projects)[number]): string {
-  return `Here’s more detail on ${p.name} (${p.dates}):\n\n${p.bullets.map((b) => `• ${b}`).join('\n')}\n\nStack: ${p.technologies.join(', ')}.\nRepo: ${p.repoUrl}`
+  return `Here’s more detail on ${p.name} (${p.dates}):\n\n${p.bullets.map((b) => `• ${b}`).join('\n')}\n\nStack: ${p.technologies.join(', ')}.\nLink: ${p.repoUrl}`
 }
 
 function humanTechStackAnswer(): string {
@@ -271,7 +292,7 @@ export function answerFromResume(query: string, conversation: readonly ResumeCha
     return `You can find me on LinkedIn here: ${contactInfo.linkedInUrl}`
   }
   if (/(github|repo)/.test(qn)) {
-    return `You can check my GitHub at ${contactInfo.githubUrl}. If you want specific repos, I can also share links for Uber Clone, AI Code Reviewer, and Fraud Detection.`
+    return `You can check my GitHub at ${contactInfo.githubUrl}. If you want specific repos, I can also share links for Uber Clone, AI Code Reviewer, and Emotion Detection from Speech.`
   }
   if (/(replyquick|reply\s+quick)/.test(qn)) {
     return narrativeReplyQuick

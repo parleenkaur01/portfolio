@@ -106,7 +106,7 @@ function formatProjectForLlmContext(p: (typeof resumeFacts.projects)[number]): s
     'What shipped (raw facts — synthesize into narrative):',
     ...p.bullets.map((b) => `  · ${b}`),
     `Stack: ${p.technologies.join(', ')}`,
-    `Repo: ${p.repoUrl}`,
+    `Link: ${p.repoUrl}`,
   ].join('\n')
 }
 

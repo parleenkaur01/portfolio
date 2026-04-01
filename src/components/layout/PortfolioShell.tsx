@@ -10,6 +10,20 @@ import { experienceEntries } from '../../constants/experience'
 import { projectRepoUrls } from '../../constants/projectLinks'
 import { techStack } from '../../constants/techStack'
 
+const SECTION_SCROLL_GAP_PX = 16
+
+function getHeaderScrollOffsetPx(): number {
+  const el = document.querySelector<HTMLElement>('.portfolio-shell__header')
+  return (el?.getBoundingClientRect().height ?? el?.offsetHeight ?? 72) + SECTION_SCROLL_GAP_PX
+}
+
+function scrollToSectionId(id: string, behavior: ScrollBehavior = 'smooth') {
+  const el = document.getElementById(id)
+  if (!el) return
+  const top = el.getBoundingClientRect().top + window.scrollY - getHeaderScrollOffsetPx()
+  window.scrollTo({ top: Math.max(0, top), behavior })
+}
+
 type ChatMessage = { id: string; role: 'user' | 'bot'; text: string }
 
 /** Turn bare emails / http(s) URLs in a line into clickable links (mailto opens the user’s email app). */
@@ -99,6 +113,27 @@ export function PortfolioShell() {
     })
   }, [])
 
+  const prefersReducedMotion =
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  const handleSectionNavClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+      e.preventDefault()
+      const behavior: ScrollBehavior = prefersReducedMotion ? 'auto' : 'smooth'
+      scrollToSectionId(sectionId, behavior)
+      window.history.replaceState(null, '', `#${sectionId}`)
+    },
+    [prefersReducedMotion],
+  )
+
+  useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, '')
+    if (!hash || !document.getElementById(hash)) return
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const run = () => scrollToSectionId(hash, reduced ? 'auto' : 'auto')
+    requestAnimationFrame(() => requestAnimationFrame(run))
+  }, [])
+
   function appendMessage(role: 'user' | 'bot', text: string) {
     setMessages((prev) => [...prev, { id: crypto.randomUUID(), role, text }])
     scrollChatToBottom()
@@ -168,18 +203,31 @@ export function PortfolioShell() {
           <nav className="portfolio-shell__nav-wrap" aria-label="Main navigation">
             <ul className="portfolio-shell__nav">
               <li>
-                <a href="#about">About</a>
+                <a href="#about" onClick={(e) => handleSectionNavClick(e, 'about')}>
+                  About
+                </a>
               </li>
               <li>
-                <a href="#projects">Projects</a>
+                <a href="#projects" onClick={(e) => handleSectionNavClick(e, 'projects')}>
+                  Projects
+                </a>
               </li>
               <li>
-                <a href="#experience">Experience</a>
+                <a href="#experience" onClick={(e) => handleSectionNavClick(e, 'experience')}>
+                  Experience
+                </a>
               </li>
             </ul>
           </nav>
 
-          <a className="portfolio-shell__header-cta" href="#contact">
+          <a
+            className="portfolio-shell__header-cta"
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault()
+              handleSectionNavClick(e, 'contact')
+            }}
+          >
             Let&apos;s Connect
           </a>
         </div>
@@ -291,26 +339,26 @@ export function PortfolioShell() {
             </article>
 
             <article className="portfolio-shell__project-card">
-              <div className="portfolio-shell__project-image portfolio-shell__project-image--fraud">
+              <div className="portfolio-shell__project-image portfolio-shell__project-image--emotion">
                 <img
-                  src="https://images.unsplash.com/photo-1768224656445-33d078c250b7?auto=format&fit=crop&w=1200&q=80"
-                  alt="Digital screens and data visualization on a circuit board background"
+                  src="https://images.unsplash.com/photo-1521116103845-2170f3377fec?auto=format&fit=crop&w=1200&q=80"
+                  alt="Studio microphone representing speech and voice audio for machine learning"
                 />
               </div>
               <div className="portfolio-shell__project-body">
-                <h3>Fraud Detection Project</h3>
+                <h3>Emotion Detection from Speech</h3>
                 <p>
-                  Implemented data-driven fraud analysis features to highlight risky patterns quickly.
-                  Improved readability of insights with concise visual blocks and clear summaries.
+                  Built an Azure-based pipeline to detect emotion from speech using LSTM/CNN models.
+                  Emphasized scalable preprocessing and MLflow-backed tuning for reliable results.
                 </p>
                 <ul className="portfolio-shell__project-tags">
                   <li>Python</li>
-                  <li>Pandas</li>
-                  <li>Visualization</li>
+                  <li>PyTorch</li>
+                  <li>Azure</li>
                 </ul>
                 <a
                   className="portfolio-shell__project-link"
-                  href={projectRepoUrls.fraudDetection}
+                  href={projectRepoUrls.emotionDetectionSpeech}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -498,7 +546,6 @@ export function PortfolioShell() {
           </div>
         </section>
       </main>
-
     </div>
   )
 }

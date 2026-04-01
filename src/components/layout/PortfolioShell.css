@@ -1,8 +1,11 @@
+/* Fixed header sits out of flow; padding-top reserves space so hero never sits under the bar. */
 .portfolio-shell {
   min-height: 100vh;
   position: relative;
   background: #000;
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
+  padding-top: calc(var(--portfolio-header-height) + env(safe-area-inset-top, 0px));
 }
 
 .portfolio-shell__bg {
@@ -12,7 +15,7 @@
   background:
     radial-gradient(circle at 18% 12%, rgba(59, 130, 246, 0.12), transparent 46%),
     radial-gradient(circle at 82% 18%, rgba(168, 85, 247, 0.1), transparent 44%),
-    radial-gradient(circle at 55% 88%, rgba(34, 197, 94, 0.07), transparent 52%),
+    radial-gradient(circle at 55% 88%, rgba(99, 102, 241, 0.06), transparent 52%),
     linear-gradient(180deg, rgba(2, 6, 23, 0.45) 0%, rgba(0, 0, 0, 1) 55%, rgba(0, 0, 0, 1) 100%);
 }
 
@@ -37,12 +40,15 @@
 }
 
 .portfolio-shell__header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 100;
-  padding: 0;
-  background: rgba(3, 10, 25, 0.6);
-  backdrop-filter: blur(8px);
+  padding: env(safe-area-inset-top, 0) 0 0;
+  background: rgba(3, 10, 25, 0.82);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(148, 163, 184, 0.2);
 }
 
@@ -141,8 +147,8 @@
   max-width: 72rem;
   margin-left: auto;
   margin-right: auto;
-  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1.25rem, 4vw, 2.25rem)
-    clamp(2.75rem, 6vw, 4.25rem);
+  padding: clamp(0.75rem, 2vw, 1.25rem) clamp(1.25rem, 4vw, 2.25rem)
+    clamp(1.75rem, 4vw, 2.75rem);
 }
 
 .portfolio-shell__main > section[id] {
@@ -446,6 +452,11 @@
   border-radius: 0;
 }
 
+section#projects.portfolio-shell__section {
+  border: none;
+  background: transparent;
+}
+
 .portfolio-shell__projects-title {
   text-align: center;
   font-size: clamp(1.9rem, 4vw, 2.8rem);
@@ -478,15 +489,17 @@
   margin-right: calc(50% - 50vw);
   margin-top: clamp(2.25rem, 5vw, 3.25rem);
   margin-bottom: 0;
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 .portfolio-shell__tech-marquee-inner {
   width: 100%;
   border: none;
-  background:
-    radial-gradient(circle at 18% 50%, rgba(59, 130, 246, 0.16), transparent 38%),
-    radial-gradient(circle at 82% 50%, rgba(168, 85, 247, 0.14), transparent 40%),
-    linear-gradient(90deg, rgba(2, 6, 23, 0.2), rgba(15, 23, 42, 0.42), rgba(2, 6, 23, 0.2));
+  outline: none;
+  box-shadow: none;
+  background: transparent;
   padding: 0.9rem 0;
   box-sizing: border-box;
   overflow: hidden;
@@ -521,7 +534,9 @@
   padding: 0.55rem 0.75rem;
   border-radius: 999px;
   border: none;
-  background: rgba(15, 23, 42, 0.72);
+  box-shadow: none;
+  outline: none;
+  background: rgba(15, 23, 42, 0.35);
   color: #f1f5f9;
   font-size: 0.92rem;
   font-weight: 600;
@@ -730,14 +745,14 @@
 .portfolio-shell__project-card {
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(148, 163, 184, 0.3);
+  border: none;
   border-radius: 0.85rem;
   padding: 0;
   overflow: hidden;
   background:
     linear-gradient(180deg, rgba(30, 41, 59, 0.75) 0%, rgba(15, 23, 42, 0.72) 100%),
     rgba(2, 6, 23, 0.55);
-  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.35);
+  box-shadow: none;
 }
 
 .portfolio-shell__project-body {
@@ -775,6 +790,11 @@
     linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
 }
 
+.portfolio-shell__project-image--emotion {
+  background:
+    radial-gradient(circle at 72% 22%, rgba(167, 139, 250, 0.35), transparent 55%),
+    linear-gradient(145deg, #0f172a 0%, #312e81 55%, #0c1929 100%);
+}
 
 .portfolio-shell__project-body h3 {
   margin: 0 0 0.5rem;
@@ -812,8 +832,8 @@
   color: #dbeafe;
   padding: 0.22rem 0.48rem;
   border-radius: 999px;
-  border: 1px solid rgba(147, 197, 253, 0.35);
-  background: rgba(30, 58, 138, 0.2);
+  border: none;
+  background: rgba(30, 58, 138, 0.28);
   white-space: nowrap;
 }
 
@@ -826,39 +846,45 @@
   text-decoration: none;
   font-size: 0.82rem;
   font-weight: 600;
-  border: 1px solid rgba(148, 163, 184, 0.38);
+  border: none;
   border-radius: 0.5rem;
   padding: 0.42rem 0.72rem;
-  background: rgba(2, 6, 23, 0.45);
+  background: rgba(30, 41, 59, 0.65);
 }
 
 .portfolio-shell__project-link:hover {
-  border-color: rgba(125, 211, 252, 0.72);
+  background: rgba(51, 65, 85, 0.92);
+  color: #f8fafc;
 }
 
 /* —— Contact (chatbot) —— */
 .portfolio-shell__section--contact {
-  margin-top: clamp(2.75rem, 6vw, 4rem);
-  padding: clamp(2.35rem, 5vw, 3.1rem) clamp(1.35rem, 3.8vw, 2.35rem)
-    clamp(2.6rem, 5vw, 3.35rem);
+  margin-top: clamp(2rem, 5vw, 3rem);
+  padding: clamp(1.65rem, 3.5vw, 2.4rem) clamp(1.35rem, 3.8vw, 2.35rem)
+    clamp(1.85rem, 3.8vw, 2.65rem);
   background: #000;
   border-color: rgba(55, 65, 81, 0.6);
+  border-top: none;
 }
 
 .portfolio-shell__contact-chat {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.85fr);
-  gap: clamp(1.5rem, 4vw, 3rem);
-  align-items: start;
+  gap: clamp(1.25rem, 3.5vw, 2.25rem);
+  align-items: center;
 }
 
 .portfolio-shell__contact-chat-left {
   min-width: 0;
-  padding-top: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0;
 }
 
 .portfolio-shell__contact-chat-title {
-  margin: 0 0 1.35rem;
+  margin: 0 0 1rem;
   font-size: clamp(2rem, 4vw, 2.75rem);
   font-weight: 700;
   color: #f9fafb;
@@ -907,9 +933,10 @@
   border: 1px solid rgba(148, 163, 184, 0.18);
   box-shadow: 0 20px 55px rgba(0, 0, 0, 0.45);
   overflow: hidden;
-  min-height: min(520px, 72vh);
+  min-height: min(340px, 48vh);
+  max-height: min(520px, 70vh);
   display: grid;
-  grid-template-rows: auto 1fr auto auto;
+  grid-template-rows: auto minmax(10rem, 1fr) auto auto;
 }
 
 .portfolio-shell__chat-topbar {
@@ -967,6 +994,7 @@
 .portfolio-shell__chat-messages {
   padding: 1rem 1rem 0.75rem;
   overflow: auto;
+  min-height: 0;
 }
 
 .portfolio-shell__chat-row {
@@ -1211,7 +1239,7 @@
 .portfolio-shell__glow--three {
   bottom: -8rem;
   left: 35%;
-  background: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.35), transparent 72%);
+  background: radial-gradient(circle at 50% 50%, rgba(129, 140, 248, 0.32), transparent 72%);
   animation-delay: 2.4s;
 }
 
@@ -1287,7 +1315,7 @@
   }
 
   .portfolio-shell__main {
-    padding: 1.25rem 1rem 2rem;
+    padding: 0.65rem 1rem 2rem;
   }
 
   .portfolio-shell__intro {
@@ -1333,11 +1361,34 @@
   }
 
   .portfolio-shell__section--contact {
-    padding: 1.5rem 1.1rem;
+    padding: 1.35rem 1rem 1.65rem;
   }
 
   .portfolio-shell__contact-chat {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .portfolio-shell__contact-chat-left {
+    align-items: center;
+    text-align: center;
+  }
+
+  .portfolio-shell__contact-chat-meta {
+    align-items: center;
+    width: 100%;
+  }
+
+  .portfolio-shell__contact-chat-meta a {
+    min-width: unset;
+    width: 100%;
+    max-width: 16rem;
+    justify-content: center;
+  }
+
+  .portfolio-shell__chat-card {
+    min-height: min(300px, 42vh);
+    max-height: min(480px, 58vh);
   }
 }
